@@ -1,33 +1,54 @@
-# 리스트
-my_list = [1, 2, 3, 4, 5]
+# 클래스
+# self: 인스턴스 자기 자신. 글로벌 속성이나 함수가 아닌, 클래스에서 파생된 인스턴스 고유의 속성 또는 함수에 접근가능하게 함.
+# __init__: 인스턴스 생성 시 자동으로 실행되는 함수. 인스턴스 생성 시 파라미터를 넣어 그 파라미터를 속성에 넣거나 함수를 실행할 수 있다.
+class Sensor:
+    def __init__(self, name):
+        self.name = name
+        self.values=[]
 
-my_list.append(6)
-print(my_list)
-second_list = my_list[0:3]
-print(second_list)
-print(len(my_list), len(second_list))
-for i in my_list:
-    print(i)
+    def add(self, value):
+        self.values.append(value)
 
-# 딕셔너리
-dict1 = {
-    "x" : 1.0,
-    "y" : 2.0
-}
+    def minimum(self):
+        if len(self.values) == 0:
+            return None
+        else:
+            m = max(self.values)
+            for i in self.values:
+                if i < m:
+                    m = i
+            return m
 
-print(dict1["x"])
-print(dict1.get("z", 0))
-dict1["z"] = 3.0
-dict1["x"] = 4.0
-print(dict1["x"])
-print(dict1["z"])
+    def average(self):
+        if len(self.values) == 0:
+            return None
+        else:
+            return (sum(self.values) / len(self.values))
 
-# 파일 읽기
-nums = []
+front = Sensor("front")
+rear = Sensor("rear")
+print("front:" + str(front.values))
+print("rear:" + str(rear.values))
+print("front:" + str(front.average()))
+print("front:" + str(front.minimum()))
+print("rear:" + str(rear.average()))
+print("rear:" + str(rear.minimum()))
+front.add(2.0)
+front.add(3.0)
+front.add(4.0)
+rear.add(10.0)
+rear.add(13.0)
+rear.add(15.0)
+print("front:" + str(front.values))
+print("rear:" + str(rear.values))
+print("front:" + str(front.average()))
+print("front:" + str(front.minimum()))
+print("rear:" + str(rear.average()))
+print("rear:" + str(rear.minimum()))
 
+front.values=[]
 with open("distances.txt") as f:
     for line in f:
-        nums.append(float(line))
+        front.add(float(line))
 
-with open("result.txt", "w") as f:
-    f.write(str(sum(nums)))
+print(front.values)
