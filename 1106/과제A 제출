@@ -1,0 +1,95 @@
+# 과제1
+my_list = []
+skip = 0
+try:
+    with open("distancess.txt") as f:
+        for line in f:
+            try:
+                my_list.append(float(line))
+            except ValueError:
+                skip += 1
+    def average(a):
+        return sum(a) / len(a)
+    print("건너뛴 줄 수: " + str(skip))
+    print("최솟값: " + str(min(my_list)))
+    print("평균: " + str(average(my_list)))
+except FileNotFoundError as e:
+    print(e)
+
+
+
+
+
+# 과제2
+class Sensor:
+    def __init__(self, name):
+        self.name = name
+        self.values=[]
+        self.skipped = 0
+
+    def add(self, value):
+        try:
+            self.values.append(float(value))
+            return True
+        except:
+            self.skipped += 1
+            return False
+
+    def minimum(self):
+        if len(self.values) == 0:
+            return None
+        else:
+            m = max(self.values)
+            for i in self.values:
+                if i < m:
+                    m = i
+            return m
+
+    def average(self):
+        if len(self.values) == 0:
+            return None
+        else:
+            return (sum(self.values) / len(self.values))
+
+
+if __name__ == "__main__":
+    s = Sensor("front")
+    s.add(3.0)
+    s.add(4.0)
+    s.add(5.0)
+    print(s.values)
+    print(s.average())
+    print(s.minimum())
+
+# 과제3
+import csv
+from sensor import Sensor
+
+my_dict = {}   # 임의로 만든 딕셔너리. 형식은 "front" : Sensor("front")가 될 것임
+
+# csv 형식: "name": "front", "distance" : "0.5". 기존 딕셔너리의 키:밸류가 두개가 들어있는 구조.
+# csv 에서 print("name") -> name에 해당하는 front 출력)
+# 그냥 딕셔너리였으면 print("front") -> distance 출력
+# 최종 구조 -> 이름: 객체, 객체는 여러 distance를 가짐
+with open("sensors.csv") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        if row['name'] not in my_dict: # 내 임의 딕셔너리 안에 front가 없으면?
+            s = Sensor(row['name']) # front란 이름으로 인스턴스 생성
+            my_dict[row['name']] = s # front: s로 임의 딕셔너리 안에 키와 밸류를 넣는다.
+            s.add(row['distance']) # 인스턴스 s의 속성 distance에 csv의 distance값을 넣는다.  ***csv에서 불러온 내용은 문자열이다.*** 형변환 안해주면 문자열로 객체 속성으로 들어가서 대소비교가 안된다.
+
+        else:   # 내 임의 딕셔너리 안에 front가 있으면?
+            s = my_dict[row['name']]   # 임의 딕셔너리에서 front로 객체를 지정하고
+            s.add(row['distance']) # 그 객체 속성에 distance를 추가
+
+
+for row in my_dict: # 딕셔너리의 키만 순회한다. 즉, row가 의미하는 바는 front, rear
+    s = my_dict[row] # 인스턴스 (dict[front]가 의미하는 바가 front 키에 대응하는 밸류인 객체이므로)
+    print(s.values)
+    print(s.average())
+    print(s.minimum())
+    print(s.skipped)
+
+
+

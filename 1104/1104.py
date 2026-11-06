@@ -1,13 +1,13 @@
-# 리스트
-my_list = [1, 2, 3, 4, 5]
+# # 리스트
+# my_list = [1, 2, 3, 4, 5]
 
-my_list.append(6)
-print(my_list)
-second_list = my_list[0:3]
-print(second_list)
-print(len(my_list), len(second_list))
-for i in my_list:
-    print(i)
+# my_list.append(6)
+# print(my_list)
+# second_list = my_list[0:3]
+# print(second_list)
+# print(len(my_list), len(second_list))
+# for i in my_list:
+#     print(i)
 
 # 딕셔너리
 dict1 = {
